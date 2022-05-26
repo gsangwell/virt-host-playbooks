@@ -3,3 +3,9 @@
   package:
     name: network-scripts
     state: present
+
+- name: Enable network service
+  service:
+    name: network
+    state: started
+    enabled: yes
