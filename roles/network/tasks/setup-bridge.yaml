@@ -1,0 +1,17 @@
+---
+- name: Define network bridge {{ bridge_name }}
+  template:
+    src: ifcfg-br.j2
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge_name }}"
+  register: bridge
+
+- name: Define network bridge interface {{ bridge_int }}
+  template:
+    src: ifcfg-int.j2
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge_int }}"
+  register: interface
+
+- name: Restart network interfaces
+  shell: "ifdown {{ bridge_int }}; ifup {{ bridge_int }}; ifup {{ bridge_name }}"
+  when: bridge.changed or interface.changed
+  

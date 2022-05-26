@@ -1,0 +1,3 @@
+---
+- name: Setup network bridge
+  import_tasks: setup-bridge.yaml

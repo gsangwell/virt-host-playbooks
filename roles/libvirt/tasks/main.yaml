@@ -1,0 +1,7 @@
+---
+- name: Install libvirt packages
+  package:
+    name:
+      - libvirt
+      - qemu-kvm
+    state: present

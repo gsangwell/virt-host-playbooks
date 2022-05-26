@@ -1,0 +1,2 @@
+[vmhosts]
+localhost ansible_connection=local bridge_name=br0 bridge_int=eth0 bridge_ip=10.10.0.101 bridge_netmask=255.255.0.0 bridge_gw=10.10.0.1 dns_server=10.10.0.1
