@@ -5,7 +5,7 @@ A collection of playbooks for setting up and configuring a libvirt host on Redha
 ```
 git clone https://github.com/gsangwell/virt-host-playbooks.git
 cd virt-host-playbooks
-cp hosts_example hosts
+cp hosts_example.yaml hosts.yaml
 vim hosts
-ansible-playbook -i hosts setup-hosts.yaml
+ansible-playbook -i hosts.yaml setup-hosts.yaml
 ```
