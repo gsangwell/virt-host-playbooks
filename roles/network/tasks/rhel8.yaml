@@ -1,0 +1,5 @@
+---
+- name: Install network-scripts
+  package:
+    name: network-scripts
+    state: present

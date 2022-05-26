@@ -1,3 +1,7 @@
 ---
+- name: RHEL8 tasks
+  import_tasks: rhel8.yaml
+  when: ansible_facts['distribution_major_version'] is version(8, operator='eq')
+
 - name: Setup network bridge
   import_tasks: setup-bridge.yaml
