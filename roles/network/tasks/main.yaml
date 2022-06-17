@@ -4,7 +4,7 @@
   when: ansible_facts['distribution_major_version'] is version(8, operator='eq')
 
 - name: Setup network bridge
-  import_tasks: setup-bridge.yaml
+  include_tasks: setup-bridge.yaml
   with_items: "{{ bridges }}"
   loop_control:
     loop_var: bridge

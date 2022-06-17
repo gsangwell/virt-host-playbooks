@@ -2,8 +2,12 @@ DEVICE={{ bridge.name }}
 TYPE=Bridge
 IPADDR={{ bridge.ip }}
 NETMASK={{ bridge.netmask }}
+{% if bridge.gw is defined %}
 GATEWAY={{ bridge.gw }}
+{% endif %}
+{% if bridge.dns is defined %}
 DNS1={{ bridge.dns }}
+{% endif %}
 ONBOOT=yes
 BOOTPROTO=none
 NM_CONTROLLED=no
