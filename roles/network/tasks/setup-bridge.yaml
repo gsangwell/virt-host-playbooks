@@ -1,22 +1,22 @@
 ---
-- name: Define network bridge {{ bridge_name }} and set dns
+- name: Define network bridge {{ bridge.name }} and set dns
   template:
     src: ifcfg-br.j2
-    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge_name }}"
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge.name }}"
   register: bridgedns
   when: dns_server is defined
 
-- name: Define network bridge {{ bridge_name }}
+- name: Define network bridge {{ bridge.name }}
   template:
     src: ifcfg-br-nodns.j2
-    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge_name }}"
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge.name }}"
   register: bridgenodns
   when: dns_server is not defined
 
-- name: Define network bridge interface {{ bridge_int }}
+- name: Define network bridge interface {{ bridge.int }}
   template:
     src: ifcfg-int.j2
-    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge_int }}"
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge.int }}"
   register: interface
 
 - name: Restart networking

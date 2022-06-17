@@ -3,18 +3,20 @@ vmhosts:
     # Example to setup the localhost
     localhost:
       ansible_connection: local # local connection
-      bridge_name: br0
-      bridge_int: eth0 # physical interface
-      bridge_ip: 10.10.0.101
-      bridge_netmask: 255.255.0.0
-      bridge_gw: 10.10.0.1
-      dns_server: 10.10.0.1 # optional
+      bridges:
+        - name: br0
+          int: eth0 # physical interface
+          ip: 10.10.0.101
+          netmask: 255.255.0.0
+          gw: 10.10.0.1
+          dns: 10.10.0.1 # optional
 
     # Example to setup a remote host
     remote_host:
-      bridge_name: br0
-      bridge_int: eth0 # physical interface
-      bridge_ip: 10.10.0.102
-      bridge_netmask: 255.255.0.0
-      bridge_gw: 10.10.0.1
-      dns_server: 10.10.0.1 # optional
+      bridges:
+        - name: br0
+          int: eth0 # physical interface
+          ip: 10.10.0.102
+          netmask: 255.255.0.0
+          gw: 10.10.0.1
+          dns: 10.10.0.1 # optional

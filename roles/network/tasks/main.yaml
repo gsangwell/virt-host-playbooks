@@ -5,3 +5,6 @@
 
 - name: Setup network bridge
   import_tasks: setup-bridge.yaml
+  with_items: "{{ bridges }}"
+  loop_control:
+    loop_var: bridge
