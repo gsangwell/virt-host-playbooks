@@ -11,3 +11,6 @@ DNS1={{ bridge.dns }}
 ONBOOT=yes
 BOOTPROTO=none
 NM_CONTROLLED=no
+{% if bridge.zone is defined %}
+ZONE={{ bridge.zone }}
+{% endif %}

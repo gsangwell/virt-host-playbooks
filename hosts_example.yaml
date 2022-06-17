@@ -8,8 +8,9 @@ vmhosts:
           int: eth0 # physical interface
           ip: 10.10.0.101
           netmask: 255.255.0.0
-          gw: 10.10.0.1
-          dns: 10.10.0.1 # optional
+          gateway: 10.10.0.1 # optional default gateway
+          dns: 10.10.0.1 # optional dns server
+          zone: public # optional firewalld zone
 
     # Example to setup a remote host
     remote_host:
@@ -18,5 +19,6 @@ vmhosts:
           int: eth0 # physical interface
           ip: 10.10.0.102
           netmask: 255.255.0.0
-          gw: 10.10.0.1
-          dns: 10.10.0.1 # optional
+          gateway: 10.10.0.1 # optional default gateway
+          dns: 10.10.0.1 # optional dns server
+          zone: public # optional firewalld zone
