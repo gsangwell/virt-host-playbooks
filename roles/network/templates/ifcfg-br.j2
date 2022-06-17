@@ -3,7 +3,7 @@ TYPE=Bridge
 IPADDR={{ bridge.ip }}
 NETMASK={{ bridge.netmask }}
 {% if bridge.gw is defined %}
-GATEWAY={{ bridge.gw }}
+GATEWAY={{ bridge.gateway }}
 {% endif %}
 {% if bridge.dns is defined %}
 DNS1={{ bridge.dns }}

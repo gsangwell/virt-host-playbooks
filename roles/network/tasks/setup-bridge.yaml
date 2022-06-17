@@ -1,5 +1,5 @@
 ---
-- name: Define network bridge {{ bridge.name }} and set dns
+- name: Define network bridge {{ bridge.name }}
   template:
     src: ifcfg-br.j2
     dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge.name }}"
