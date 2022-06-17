@@ -5,3 +5,9 @@
       - libvirt
       - qemu-kvm
     state: present
+
+- name: Start libvirtd
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes
