@@ -1,0 +1,39 @@
+---
+libvirt_arch: x86_64
+vms:
+  - name: test-vm01
+    vcpus: 2
+    memory_mb: 4096
+    cpu_mode: 'host-passthrough' # optional
+    volumes:
+      - name: 'root'
+        format: 'qcow2'
+        target: 'vda'
+        backing_vol: 'CentOS-Stream-GenericCloud-8-20220125.1.x86_64.qcow2' # must already exist in the same pool
+        capacity: '20G'
+        pool: 'vm'
+    interfaces:
+      - name: 'eth0'
+        type: 'bridge'
+        device: 'br0' # bridge must already exist
+      - name: 'eth1'
+        type: 'network'
+        network: 'network1' # network must already exist
+    cloud_init:
+      meta_data: |
+        local-hostname: test-vm01
+      user_data: |
+        users:
+          - name: root
+            lock_passwd: false
+            hashed_passwd: $6$eifjwfjwnef$mYx9028u6TpZjQnzluKdWaIi.ZBrI2Z2y0yhc93EkR/aoxkal72rpkyWshh9xlh7yvHqrUBOm5cYGM.1ADGZ71 # admin123
+      network_config: |
+        version: 2
+        ethernets:
+          eth0:
+            dhcp4: true
+          eth1:
+            addresses:
+              - 10.10.6.1/16
+    enable_vnc: true
+    started: true
