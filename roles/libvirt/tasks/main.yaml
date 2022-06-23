@@ -4,6 +4,7 @@
     name:
       - libvirt
       - qemu-kvm
+      - genisoimage
     state: present
 
 - name: Start libvirtd

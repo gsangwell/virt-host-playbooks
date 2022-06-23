@@ -1,0 +1,12 @@
+---
+- name: Create virsh pools
+  include_tasks: pool.yaml
+  with_items: "{{ pools }}"
+  loop_control:
+    loop_var: pool
+
+- name: Create VMs
+  include_tasks: vm.yaml
+  with_items: "{{ vms }}"
+  loop_control:
+    loop_var: vm

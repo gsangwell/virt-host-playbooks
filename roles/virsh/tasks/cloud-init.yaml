@@ -1,0 +1,36 @@
+- name: Create cloud-init temp directory
+  tempfile:
+    state: directory
+    suffix: cloud-init
+  register: tmpdir
+
+- name: Create user-data
+  template:
+    src: user-data.j2
+    dest: "{{ tmpdir.path }}/user-data"
+  vars:
+    user_data: "{{ vm.cloud_init.user_data }}"
+  register: userdata
+
+- name: Create meta-data
+  copy:
+    content: "{{ vm.cloud_init.meta_data }}"
+    dest: "{{ tmpdir.path }}/meta-data"
+  register: metadata
+
+- name: Create network-config
+  copy:
+    content: "{{ vm.cloud_init.network_config }}"
+    dest: "{{ tmpdir.path }}/network-config"
+  register: netconfig
+
+- name: Create cloud-init ISO
+  shell:
+    cmd: "genisoimage -output {{ cloud_init_iso_dir }}/{{ vm.name }}-cloud-init.iso -volid cidata -joliet -rock {{ tmpdir.path }}/user-data {{ tmpdir.path }}/meta-data {{ tmpdir.path }}/network-config"
+  when: userdata.changed or metadata.changed or netconfig.changed
+
+- name: Cleanup cloud-init temp directory
+  file:
+    state: absent
+    path: "{{ tmpdir.path }}"
+

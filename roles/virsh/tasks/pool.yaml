@@ -1,0 +1,41 @@
+- name: Gather virsh pool facts
+  virt_pool:
+    command: facts
+
+- name: Create virsh pool dir {{ pool.dir }}
+  file:
+    path: "{{ pool.dir }}"
+    state: directory
+
+- name: Create virsh pool {{ pool.name }} cloud-init dir
+  file:
+    path: "{{ pool.dir }}/cloud-init"
+    state: directory
+
+- block:
+  - name: Define virsh pool {{ pool.name }}
+    virt_pool:
+      command: define
+      name: "{{ pool.name }}"
+      xml: '{{ lookup("template", "pool.xml.j2") }}'
+
+  - name: Build virsh pool {{ pool.name }}
+    virt_pool:
+      command: build
+      name: "{{ pool.name }}"
+
+  - name: Start virsh pool {{ pool.name }}
+    virt_pool:
+      command: start
+      name: "{{ pool.name }}"
+  when: pool.name not in ansible_libvirt_pools
+
+- name: Autostart virsh pool {{ pool.name }}
+  virt_pool:
+    autostart: yes
+    name: "{{ pool.name }}"
+
+- name: Ensure virsh pool {{ pool.name }} is active
+  virt_pool:
+    state: active
+    name: "{{ pool.name }}"

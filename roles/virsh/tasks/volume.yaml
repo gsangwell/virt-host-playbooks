@@ -1,0 +1,22 @@
+---
+- name: Check if volume {{ vmname }}-{{ vol.name }}.{{ vol.format }} exists
+  shell:
+    cmd: "virsh vol-key --pool {{ vol.pool }} {{ vmname }}-{{ vol.name }}.{{ vol.format }}"
+  register: exists
+  failed_when: exists.rc != 0 and exists.rc != 1
+
+- name: Create volume
+  shell:
+    cmd: "virsh vol-create-as --pool {{ vol.pool }} --name {{ vmname }}-{{ vol.name }}.{{ vol.format }} --format {{ vol.format }} --capacity {{ vol.capacity }}"
+  when: exists.rc != 0 and vol.backing_vol is not defined
+
+- name: Create volume with backing image
+  shell:
+    cmd: "virsh vol-create-as --pool {{ vol.pool }} --name {{ vmname }}-{{ vol.name }}.{{ vol.format }} --format {{ vol.format }} --capacity {{ vol.capacity }} --backing-vol {{ vol.backing_vol }} --backing-vol-format {{ vol.format }}"
+  when: exists.rc != 0 and vol.backing_vol is defined
+
+- name: Get path to volume
+  shell:
+    cmd: "virsh vol-key --pool {{ vol.pool }} {{ vmname }}-{{ vol.name }}.{{ vol.format }}"
+  register: new_vol
+  failed_when: new_vol.rc != 0

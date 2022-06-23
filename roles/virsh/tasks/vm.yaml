@@ -1,0 +1,22 @@
+---
+- name: Create volumes for VM {{ vm.name }}
+  include_tasks: volume.yaml
+  vars:
+    vmname: "{{ vm.name }}"
+  with_items: "{{ vm.volumes | default([], true) }}"
+  loop_control:
+    loop_var: vol
+
+- name: Create cloud-init
+  include_tasks: cloud-init.yaml
+  when: vm.cloud_init is defined
+
+- name: Ensure the VM is defined
+  virt:
+    command: define
+    xml: "{{ lookup('template', 'vm.xml.j2') }}"
+
+- name: Start VM
+  virt:
+    name: "{{ vm.name }}"
+    state: running

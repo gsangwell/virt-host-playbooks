@@ -1,0 +1,4 @@
+pools:
+  - name: vm
+    dir: /opt/vm
+cloud_init_iso_dir: /opt/vm/cloud-init

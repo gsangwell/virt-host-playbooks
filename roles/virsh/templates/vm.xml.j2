@@ -1,0 +1,86 @@
+<domain type='kvm'>
+  <name>{{ vm.name }}</name>
+  <uuid>{{ vm.name | to_uuid }}</uuid>
+  <memory>{{ vm.memory_mb | int * 1024 }}</memory>
+  <vcpu>{{ vm.vcpus }}</vcpu>
+
+{% if vm.cpu_mode is defined %}
+  <cpu mode='{{ vm.cpu_mode }}' />
+{% endif %}
+
+{% if vm.clock_offset is defined %}
+  <clock offset="{{ vm.clock_offset }}"/>
+{% else %}
+  <clock sync="localtime"/>
+{% endif %}
+
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+
+  <os>
+    <type arch='{{ libvirt_arch }}'>hvm</type>
+    <boot dev='hd'/>
+    <boot dev='hd'/>
+    <boot dev='cdrom'/>
+    <boot dev='network'/>
+    <bios useserial='yes'/>
+  </os>
+
+  <features>
+    <acpi/>
+    <apic/>
+    <vmport state='off'/>
+  </features>
+
+  <devices>
+
+{% for vol in vm.volumes %}
+    <disk type='volume' device='disk'>
+      <driver name='qemu' type='{{ vol.format }}'/>
+      <source pool='{{ vol.pool }}' volume='{{ vm.name }}-{{ vol.name }}.{{ vol.format}}'/>
+      <target dev='{{ vol.target }}' />
+    </disk>
+{% endfor %}
+
+{% if vm.cloud_init is defined %}
+    <disk type='file' device='cdrom'>
+      <driver name='qemu' type='raw'/>
+      <source file='{{ cloud_init_iso_dir }}/{{ vm.name }}-cloud-init.iso'/>
+      <target dev='hdc' bus='sata'/>
+    </disk>
+{% endif %}
+
+{% for int in vm.interfaces %}
+    <interface type='{{ int.type }}'>
+{% if int.type == 'bridge' %}
+      <source bridge='{{ int.device }}' />
+{% elif int.type == 'network' %}
+      <source network='{{ int.network }}'/>
+{% endif %}
+      <alias name='{{ int.name }}'/>
+    </interface>
+{% endfor %}
+
+    <serial type='pty'>
+      <source path='/dev/pts/1'/>
+      <target port='0'/>
+    </serial>
+    <console type='pty' tty='/dev/pts/1'>
+      <source path='/dev/pts/1'/>
+      <target type='serial' port='0'/>
+    </console>
+
+{% if vm.enable_vnc is defined and vm.enable_vnc |bool %}
+    <graphics type='vnc' autoport='yes' listen='127.0.0.1'>
+      <listen type='address' address='127.0.0.1'/>
+    </graphics>
+{% endif %}
+
+{% if vm.enable_spice is defined and vm.enable_spice |bool %}
+    <graphics type='spice' autoport='yes'>
+      <listen type='address' address='127.0.0.1'/>
+    </graphics>
+{% endif %}
+  </devices>
+</domain>

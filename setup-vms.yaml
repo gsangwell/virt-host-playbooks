@@ -1,0 +1,8 @@
+---
+- hosts:
+    - "{{ vmhost }}"
+  vars_files:
+    - "{{ vmvars }}"
+  roles:
+    - virsh
+
