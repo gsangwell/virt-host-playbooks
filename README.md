@@ -1,6 +1,14 @@
 # virt-host-playbooks
 A collection of playbooks for setting up and configuring a libvirt host on Redhat Linux.
 
+## Requirements
+```
+python36
+libvirt-python3
+python3-lxml
+ansible
+```
+
 ## Usage
 ```
 git clone https://github.com/gsangwell/virt-host-playbooks.git
