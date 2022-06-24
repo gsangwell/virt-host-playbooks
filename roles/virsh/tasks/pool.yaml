@@ -39,3 +39,8 @@
   virt_pool:
     state: active
     name: "{{ pool.name }}"
+
+- name: Refresh pool {{ pool.name }}
+  virt_pool:
+    command: refresh
+    name: "{{ pool.name }}"
