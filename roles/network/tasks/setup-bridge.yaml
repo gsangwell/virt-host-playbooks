@@ -10,6 +10,7 @@
     src: ifcfg-int.j2
     dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge.int }}"
   register: int
+  when: bridge.int is defined
 
 - name: Restart networking
   service:
