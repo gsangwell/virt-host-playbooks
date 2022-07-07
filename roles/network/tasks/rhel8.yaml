@@ -4,6 +4,11 @@
     name: network-scripts
     state: present
 
+- name: Install dhcp-client
+  package:
+    name: dhcp-client
+    state: present
+
 - name: Enable network service
   service:
     name: network

@@ -1,5 +1,6 @@
 DEVICE={{ bridge.name }}
 TYPE=Bridge
+{% if bridge.dhcp is not defined %}
 IPADDR={{ bridge.ip }}
 NETMASK={{ bridge.netmask }}
 {% if bridge.gateway is defined %}
@@ -8,8 +9,11 @@ GATEWAY={{ bridge.gateway }}
 {% if bridge.dns is defined %}
 DNS1={{ bridge.dns }}
 {% endif %}
-ONBOOT=yes
 BOOTPROTO=none
+{% else %}
+BOOTPROTO=dhcp
+{% endif %}
+ONBOOT=yes
 NM_CONTROLLED=no
 {% if bridge.zone is defined %}
 ZONE={{ bridge.zone }}
