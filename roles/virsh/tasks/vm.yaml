@@ -1,22 +1,32 @@
 ---
-- name: Create volumes for VM {{ vm.name }}
-  include_tasks: volume.yaml
-  vars:
-    vmname: "{{ vm.name }}"
-  with_items: "{{ vm.volumes | default([], true) }}"
-  loop_control:
-    loop_var: vol
+- name: Check if VM already exists {{ vm.name }}
+  shell:
+    cmd: "virsh dominfo {{ vm.name }}"
+  register: vm_exists
+  changed_when: false
+  failed_when: false
 
-- name: Create cloud-init
-  include_tasks: cloud-init.yaml
-  when: vm.cloud_init is defined
+- name: Create VM {{ vm.name }}
+  block:
+    - name: Create volumes for VM {{ vm.name }}
+      include_tasks: volume.yaml
+      vars:
+        vmname: "{{ vm.name }}"
+      with_items: "{{ vm.volumes | default([], true) }}"
+      loop_control:
+        loop_var: vol
 
-- name: Ensure the VM is defined
-  virt:
-    command: define
-    xml: "{{ lookup('template', 'vm.xml.j2') }}"
+    - name: Create cloud-init
+      include_tasks: cloud-init.yaml
+      when: vm.cloud_init is defined
 
-- name: Start VM
-  virt:
-    name: "{{ vm.name }}"
-    state: running
+    - name: Ensure the VM is defined
+      virt:
+        command: define
+        xml: "{{ lookup('template', 'vm.xml.j2') }}"
+
+    - name: Start VM
+      virt:
+        name: "{{ vm.name }}"
+        state: running
+  when: vm_exists.rc != 0

@@ -9,7 +9,9 @@ vms:
       - name: 'root'
         format: 'qcow2'
         target: 'vda'
+        # backing_vol and file are exclusive options
         backing_vol: 'CentOS-Stream-GenericCloud-8-20220125.1.x86_64.qcow2' # must already exist in the same pool
+        # file: '/path/to/existing/image.qcow2'
         capacity: '20G'
         pool: 'vm'
     interfaces:

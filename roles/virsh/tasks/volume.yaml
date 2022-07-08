@@ -5,7 +5,7 @@
   register: exists
   failed_when: exists.rc != 0 and exists.rc != 1
 
-- name: Create volume
+- name: Create empty volume
   shell:
     cmd: "virsh vol-create-as --pool {{ vol.pool }} --name {{ vmname }}-{{ vol.name }}.{{ vol.format }} --format {{ vol.format }} --capacity {{ vol.capacity }}"
   when: exists.rc != 0 and vol.backing_vol is not defined
@@ -13,7 +13,12 @@
 - name: Create volume with backing image
   shell:
     cmd: "virsh vol-create-as --pool {{ vol.pool }} --name {{ vmname }}-{{ vol.name }}.{{ vol.format }} --format {{ vol.format }} --capacity {{ vol.capacity }} --backing-vol {{ vol.backing_vol }} --backing-vol-format {{ vol.format }}"
-  when: exists.rc != 0 and vol.backing_vol is defined
+  when: exists.rc != 0 and vol.backing_vol is defined and vol.file is not defined
+
+- name: Upload existing file to volume
+  shell:
+    cmd: "virsh vol-upload --vol {{ vmname }}-{{ vol.name }}.{{ vol.format }} --pool {{ vol.pool }} --file {{ vol.file }}"
+  when: exists.rc != 0 and vol.file is defined
 
 - name: Get path to volume
   shell:
