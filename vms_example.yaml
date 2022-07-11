@@ -39,3 +39,4 @@ vms:
               - 10.10.6.1/16
     enable_vnc: true
     started: true
+    autostart: true

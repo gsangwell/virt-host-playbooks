@@ -29,4 +29,11 @@
       virt:
         name: "{{ vm.name }}"
         state: running
+      when: vm.started is defined
+    
+    - name: Autostart VM
+      virt:
+        name: "{{ vm.name }}"
+        autostart: yes
+      when: vm.autostart is defined
   when: vm_exists.rc != 0
