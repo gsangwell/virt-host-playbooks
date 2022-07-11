@@ -1,4 +1,5 @@
 pools:
   - name: vm
-    dir: /opt/vm
+    dir: /opt/vm/storage
+
 cloud_init_iso_dir: /opt/vm/cloud-init
