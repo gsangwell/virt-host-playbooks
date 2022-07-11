@@ -1,4 +1,9 @@
 ---
+- name: Create cloud-init directory
+  file:
+    path: "{{ cloud_init_iso_dir }}"
+    state: directory
+
 - name: Create virsh pools
   include_tasks: pool.yaml
   with_items: "{{ pools }}"

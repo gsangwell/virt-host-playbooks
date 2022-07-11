@@ -7,11 +7,6 @@
     path: "{{ pool.dir }}"
     state: directory
 
-- name: Create virsh pool {{ pool.name }} cloud-init dir
-  file:
-    path: "{{ pool.dir }}/cloud-init"
-    state: directory
-
 - block:
   - name: Define virsh pool {{ pool.name }}
     virt_pool:
