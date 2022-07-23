@@ -1,8 +1,10 @@
 DEVICE={{ bridge.name }}
 TYPE=Bridge
 {% if bridge.dhcp is not defined %}
+{% if bridge.ip is defined %}
 IPADDR={{ bridge.ip }}
 NETMASK={{ bridge.netmask }}
+{% endif %}
 {% if bridge.gateway is defined %}
 GATEWAY={{ bridge.gateway }}
 {% endif %}
