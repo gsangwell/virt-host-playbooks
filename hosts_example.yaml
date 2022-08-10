@@ -4,21 +4,23 @@ vmhosts:
     localhost:
       ansible_connection: local # local connection
       bridges:
-        - name: br0
+        - name: br0 # bridge name
           int: eth0 # physical interface
-          ip: 10.10.0.101
-          netmask: 255.255.0.0
+          ip: 10.10.0.101 # ip to set on the bridge
+          netmask: 255.255.0.0 # netmask
           gateway: 10.10.0.1 # optional default gateway
           dns: 10.10.0.1 # optional dns server
           zone: public # optional firewalld zone
+          #dhcp: false # Use dhcp instead of a static IP
 
     # Example to setup a remote host
     remote_host:
       bridges:
-        - name: br0
+        - name: br0 # bridge name
           int: eth0 # physical interface
-          ip: 10.10.0.102
-          netmask: 255.255.0.0
+          ip: 10.10.0.102 # ip to set on the bridge
+          netmask: 255.255.0.0 # netmask
           gateway: 10.10.0.1 # optional default gateway
           dns: 10.10.0.1 # optional dns server
           zone: public # optional firewalld zone
+          #dhcp: false # Use dhcp instead of a static IP
