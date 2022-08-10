@@ -17,3 +17,9 @@
     name: network
     state: restarted
   when: br.changed or int.changed
+
+- name: Restart firewalld
+  service:
+    name: firewalld
+    state: restarted
+  when: br.changed or int.changed
