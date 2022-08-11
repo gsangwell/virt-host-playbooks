@@ -1,6 +1,6 @@
 ---
 - hosts:
-    - "{{ vmhost }}"
+    - vmhosts
   vars_files:
     - "{{ vmvars }}"
   roles:

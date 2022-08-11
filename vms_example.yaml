@@ -1,10 +1,11 @@
 ---
 libvirt_arch: x86_64
 vms:
+  # Define one or more VMs to be created
   - name: test-vm01
     vcpus: 2
     memory_mb: 4096
-    cpu_mode: 'host-passthrough' # optional
+    # Volumes to create and attach
     volumes:
       - name: 'root'
         format: 'qcow2'
@@ -12,13 +13,16 @@ vms:
         capacity: '20G'
         file: '/path/to/your/image.qcow2'
         pool: 'vm'
+    # Networks to attach
     interfaces:
       - name: 'eth0'
         type: 'bridge'
-        device: 'br0' # network bridge must already exist
+        device: 'pri'
+        # Or add an interface to virsh network
       - name: 'eth1'
         type: 'network'
         network: 'network1' # libvirt network must already exist
+    # Inject cloud-init data
     cloud_init:
       meta_data: |
         local-hostname: test-vm01

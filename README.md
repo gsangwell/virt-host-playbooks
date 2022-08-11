@@ -23,5 +23,5 @@ ansible-playbook -i hosts.yaml setup-hosts.yaml
 ```
 cp vms_example.yaml vms.yaml
 vim vms.yaml
-ansible-playbook -e vmhost=<HOSTNAME> vmvars=vms.yaml setup-vms.yaml
+ansible-playbook -i hosts.yaml vmvars=vms.yaml setup-vms.yaml
 ```
