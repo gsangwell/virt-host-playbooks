@@ -24,4 +24,16 @@ ansible-playbook -i hosts.yaml setup-hosts.yaml
 cp vms_example.yaml vms.yaml
 vim vms.yaml
 ansible-playbook -i hosts.yaml vmvars=vms.yaml setup-vms.yaml
+
+# Create multiple yaml files for different sets of VMs
+cp vms_example.yaml newvms.yaml
+ansible-playbook -i hosts.yaml vmvars=newvms.yaml setup-vms.yaml
+```
+
+## Deleting VMs
+Currently no playbook to delete VMs, so this needs to be done manually using virsh commands.
+```
+virsh destroy <vm_name>
+virsh undefine <vm_name>
+virsh vol-delete <vm_name>-<volume_name>.<vol_format> --pool <vol_pool>
 ```
