@@ -15,9 +15,32 @@
     cmd: "virsh vol-create-as --pool {{ vol.pool }} --name {{ vmname }}-{{ vol.name }}.{{ vol.format }} --format {{ vol.format }} --capacity {{ vol.capacity }} --backing-vol {{ vol.backing_vol }} --backing-vol-format {{ vol.format }}"
   when: exists.rc != 0 and vol.backing_vol is defined and vol.file is not defined
 
-- name: Upload existing file to volume
-  shell:
-    cmd: "virsh vol-upload --vol {{ vmname }}-{{ vol.name }}.{{ vol.format }} --pool {{ vol.pool }} --file {{ vol.file }}"
+- name: Upload existing image to volume
+  block:
+    - name: Create temp directory
+      tempfile:
+        state: directory
+      register: tmpdir
+
+    - name: Copy existing image
+      copy:
+        src: "{{ vol.file }}"
+        dest: "{{ tmpdir.path }}/{{ vol.name }}.{{ vol.format }}"
+
+    - name: Resize existing image
+      shell:
+        cmd: "qemu-img resize {{ tmpdir.path }}/{{ vol.name }}.{{ vol.format }} {{ vol.capacity }}"
+      register: resized_image
+      failed_when: resized_image.rc != 0
+
+    - name: Upload existing file to volume
+      shell:
+        cmd: "virsh vol-upload --vol {{ vmname }}-{{ vol.name }}.{{ vol.format }} --pool {{ vol.pool }} --file {{ tmpdir.path }}/{{ vol.name }}.{{ vol.format }}"
+
+    - name: Cleanup temp directory
+      file:
+        state: absent
+        path: "{{ tmpdir.path }}"
   when: exists.rc != 0 and vol.file is defined
 
 - name: Get path to volume
