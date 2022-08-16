@@ -27,7 +27,7 @@ ansible-playbook -i hosts.yaml vmvars=vms.yaml setup-vms.yaml
 
 # Create multiple yaml files for different sets of VMs
 cp vms_example.yaml newvms.yaml
-ansible-playbook -i hosts.yaml vmvars=newvms.yaml setup-vms.yaml
+ansible-playbook -i hosts.yaml -e vmvars=newvms.yaml setup-vms.yaml
 ```
 
 ## Deleting VMs
