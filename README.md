@@ -11,6 +11,7 @@ ansible
 
 ## Usage
 ```
+sudo su -
 git clone https://github.com/gsangwell/virt-host-playbooks.git
 cd virt-host-playbooks
 ansible-galaxy install -r requirements.yaml
