@@ -1,4 +1,7 @@
 ---
+- name: Install requirements
+  include_tasks: requirements.yaml
+
 - name: Create cloud-init directory
   file:
     path: "{{ cloud_init_iso_dir }}"
