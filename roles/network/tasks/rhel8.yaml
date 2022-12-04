@@ -9,6 +9,14 @@
     name: dhcp-client
     state: present
 
+- name: Remove default network scripts
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/etc/sysconfig/network-scripts/ifcfg-ens3"
+    - "/etc/sysconfig/network-scripts/ifcfg-ens3-1"
+
 - name: Enable network service
   service:
     name: network
